@@ -1,0 +1,59 @@
+{
+  "id": "something-big-is-happening",
+  "slug": "something-big-is-happening",
+  "defaultLanguage": "en",
+  "availableFormats": [
+    "full"
+  ],
+  "title": "Something Big Is Happening",
+  "previewText": "A personal note for non-tech friends and family on what AI is starting to change.",
+  "author": {
+    "name": "Matt Shumer",
+    "xHandle": "@mattshumer_",
+    "xUrl": "https://x.com/mattshumer_"
+  },
+  "publishedAt": "2026-02-09",
+  "sourceUrl": "https://shumer.dev/something-big-is-happening",
+  "languages": [
+    {
+      "code": "en",
+      "label": "English"
+    },
+    {
+      "code": "ms",
+      "label": "Bahasa Malaysia"
+    },
+    {
+      "code": "zh",
+      "label": "Chinese"
+    },
+    {
+      "code": "ta",
+      "label": "Tamil"
+    },
+    {
+      "code": "id",
+      "label": "Bahasa Indonesia"
+    },
+    {
+      "code": "tl",
+      "label": "Tagalog"
+    },
+    {
+      "code": "hi",
+      "label": "Hindi"
+    },
+    {
+      "code": "ml",
+      "label": "Malayalam"
+    },
+    {
+      "code": "iba",
+      "label": "Iban"
+    },
+    {
+      "code": "kdu",
+      "label": "Kadazan Dusun"
+    }
+  ]
+}

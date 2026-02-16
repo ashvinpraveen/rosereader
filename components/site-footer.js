@@ -1,0 +1,38 @@
+import Link from "next/link";
+
+export default function SiteFooter() {
+  return (
+    <footer className="siteFooter">
+      <div className="siteFooterInner">
+        <nav className="footerLinks" aria-label="Footer">
+          <Link href="/#article" className="footerLink">
+            Article
+          </Link>
+          <Link href="/about" className="footerLink">
+            About
+          </Link>
+        </nav>
+
+        <p className="footerCredit">
+          made with{" "}
+          <span aria-label="love" role="img">
+            ❤️
+          </span>{" "}
+          by{" "}
+          <a
+            href="https://x.com/ashvinpk"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footerLink"
+          >
+            @ashvinpk
+          </a>{" and "}
+          <a href="https://openai.com/codex" target="_blank" rel="noopener noreferrer" className="footerLink">
+            codex
+          </a>{" "}
+          in 2 hours
+        </p>
+      </div>
+    </footer>
+  );
+}
