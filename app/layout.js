@@ -1,5 +1,4 @@
 import "./globals.css";
-import ThemeToggle from "../components/theme-toggle";
 import SiteFooter from "../components/site-footer";
 import SiteHeader from "../components/site-header";
 import { Analytics } from "@vercel/analytics/react";
@@ -71,7 +70,6 @@ export default function RootLayout({ children }) {
           }}
         />
         <SiteHeader />
-        <ThemeToggle />
         <div className="siteContent">{children}</div>
         <SiteFooter />
         <Analytics />
