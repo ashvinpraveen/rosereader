@@ -144,7 +144,6 @@ export default async function ArticlePage({ params, searchParams }) {
       true
     );
   const preferredLanguage = findLanguageLabel(article.languages, article.lang);
-  const promptBody = article.body;
   const llmPrompt = `explain this, personalise it to me based on what you know about me and change the language to ${preferredLanguage}. ${originalArticleUrl}`;
   const encodedLlmPrompt = encodeURIComponent(llmPrompt);
   const chatGptLink = `https://chatgpt.com/?q=${encodedLlmPrompt}`;
@@ -310,9 +309,13 @@ export default async function ArticlePage({ params, searchParams }) {
           {article.meta.title}
         </a>{" "}
         by{" "}
-        <a href={article.meta.author.xUrl} target="_blank" rel="noopener noreferrer">
-          {article.meta.author.name}
-        </a>
+        {article.meta.author?.xUrl ? (
+          <a href={article.meta.author.xUrl} target="_blank" rel="noopener noreferrer">
+            {article.meta.author.name}
+          </a>
+        ) : (
+          article.meta.author?.name
+        )}
         {" • "}
         {article.meta.publishedAt}
       </p>
