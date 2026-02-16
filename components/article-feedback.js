@@ -139,8 +139,21 @@ export default function ArticleFeedbackDialog({
 
   return (
     <>
-      <button type="button" className="feedbackButton" onClick={openDialog}>
-        Give translation feedback
+      <button type="button" className="followButton" onClick={openDialog}>
+        <span className="followIcon" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ width: "100%", height: "100%" }}
+          >
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+        </span>
+        <span>Give translation feedback</span>
       </button>
 
       <dialog ref={dialogRef} className="feedbackDialog" aria-labelledby="feedbackTitle">

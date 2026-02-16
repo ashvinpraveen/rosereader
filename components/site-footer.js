@@ -11,6 +11,14 @@ export default function SiteFooter() {
           <Link href="/about" className="footerLink">
             About
           </Link>
+          <a
+            href="https://github.com/ashvinpraveen/rosereader"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footerLink"
+          >
+            GitHub
+          </a>
         </nav>
 
         <p className="footerCredit">

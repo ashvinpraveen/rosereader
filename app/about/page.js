@@ -40,6 +40,19 @@ export default function AboutPage() {
           takes important writing and makes it readable across linguistic boundaries so more people
           can engage with the same ideas.
         </p>
+
+        <p className="aboutParagraph">
+          rosereader is open source. You can find the code on{" "}
+          <a
+            href="https://github.com/ashvinpraveen/rosereader"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="breadcrumbLink"
+          >
+            GitHub
+          </a>
+          .
+        </p>
       </section>
     </main>
   );

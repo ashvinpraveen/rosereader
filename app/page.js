@@ -34,10 +34,11 @@ export default async function HomePage() {
   return (
     <main className="page pageWide homePage">
       <section className="homeIntro">
-        <h1 className="heroTitle">One important article, translated for everyone.</h1>
+        <h1 className="heroTitle">The world&apos;s most important ideas shouldn&apos;t be trapped in English.</h1>
         <p className="heroLead">
-          Read high-impact articles in multiple languages and formats. Share one link,
-          and people can switch to the version they understand best.
+          Impactful writing shouldn&apos;t be limited by the language you speak. We translate
+          the articles that matter into every major tongue—share one link, and let
+          everyone read the version they understand best.
         </p>
       </section>
 

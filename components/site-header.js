@@ -15,6 +15,14 @@ export default function SiteHeader() {
           <Link href="/about" className="siteNavLink">
             About
           </Link>
+          <a
+            href="https://github.com/ashvinpraveen/rosereader"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="siteNavLink"
+          >
+            GitHub
+          </a>
         </nav>
       </div>
     </header>

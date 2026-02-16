@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import ArticleFeedbackDialog from "../../../../components/article-feedback";
 import {
   getArticleDocument,
@@ -20,61 +22,26 @@ function withCompareParam(pathname, enabled) {
   return `${pathname}?compare=1`;
 }
 
-function renderArticleBlocks(blocks) {
-  return blocks.map((block, index) => {
-    const key = `${block.type}-${index}`;
-
-    if (block.type === "heading") {
-      if (block.level <= 2) {
-        return (
-          <h2 className="articleSectionTitle" key={key}>
-            {block.text}
-          </h2>
-        );
-      }
-
-      return (
-        <h3 className="articleSectionTitle" key={key}>
-          {block.text}
-        </h3>
-      );
-    }
-
-    if (block.type === "quote") {
-      return (
-        <blockquote className="articleQuote" key={key}>
-          {block.text}
-        </blockquote>
-      );
-    }
-
-    if (block.type === "unordered-list") {
-      return (
-        <ul className="articleList" key={key}>
-          {block.items.map((item, itemIndex) => (
-            <li key={`${key}-${itemIndex}`}>{item}</li>
-          ))}
-        </ul>
-      );
-    }
-
-    if (block.type === "ordered-list") {
-      return (
-        <ol className="articleList" key={key}>
-          {block.items.map((item, itemIndex) => (
-            <li key={`${key}-${itemIndex}`}>{item}</li>
-          ))}
-        </ol>
-      );
-    }
-
-    return (
-      <p className="articleParagraph" key={key}>
-        {block.text}
-      </p>
-    );
-  });
-}
+const markdownComponents = {
+  h1: ({ children }) => <h2 className="articleSectionTitle">{children}</h2>,
+  h2: ({ children }) => <h2 className="articleSectionTitle">{children}</h2>,
+  h3: ({ children }) => <h3 className="articleSectionTitle">{children}</h3>,
+  h4: ({ children }) => <h3 className="articleSectionTitle">{children}</h3>,
+  h5: ({ children }) => <h3 className="articleSectionTitle">{children}</h3>,
+  h6: ({ children }) => <h3 className="articleSectionTitle">{children}</h3>,
+  p: ({ children }) => <p className="articleParagraph">{children}</p>,
+  blockquote: ({ children }) => <blockquote className="articleQuote">{children}</blockquote>,
+  ul: ({ children }) => <ul className="articleList">{children}</ul>,
+  ol: ({ children }) => <ol className="articleList">{children}</ol>,
+  li: ({ children }) => <li>{children}</li>,
+  strong: ({ children }) => <strong>{children}</strong>,
+  em: ({ children }) => <em>{children}</em>,
+  a: ({ children, href }) => (
+    <a href={href} target="_blank" rel="noopener noreferrer">
+      {children}
+    </a>
+  )
+};
 
 export async function generateStaticParams() {
   return listStaticArticleParams();
@@ -141,10 +108,10 @@ export default async function ArticlePage({ params, searchParams }) {
 
   const originalArticle = isCompare
     ? await getArticleDocument({
-        slug: article.slug,
-        lang: originalLanguage,
-        format: article.format
-      })
+      slug: article.slug,
+      lang: originalLanguage,
+      format: article.format
+    })
     : null;
 
   const originalArticleUrl =
@@ -173,9 +140,16 @@ export default async function ArticlePage({ params, searchParams }) {
   const compareToggleHref = isCompare
     ? getArticlePath({ lang: article.lang, slug: article.slug, format: article.format })
     : withCompareParam(
-        getArticlePath({ lang: article.lang, slug: article.slug, format: article.format }),
-        true
-      );
+      getArticlePath({ lang: article.lang, slug: article.slug, format: article.format }),
+      true
+    );
+  const preferredLanguage = findLanguageLabel(article.languages, article.lang);
+  const promptBody = article.body;
+  const llmPrompt = `explain this, personalise it to me based on what you know about me and change the language to ${preferredLanguage}. ${originalArticleUrl}`;
+  const encodedLlmPrompt = encodeURIComponent(llmPrompt);
+  const chatGptLink = `https://chatgpt.com/?q=${encodedLlmPrompt}`;
+  const claudeLink = `https://claude.ai/new?q=${encodedLlmPrompt}`;
+  const geminiLink = `https://gemini.google.com/app?q=${encodedLlmPrompt}`;
 
   return (
     <main className={`page articlePage ${isCompare ? "pageWide" : ""}`}>
@@ -183,7 +157,18 @@ export default async function ArticlePage({ params, searchParams }) {
         <h1 className="title">{article.frontmatter.title}</h1>
 
         <div className="articleMetaRow" aria-label="Article metadata">
-          <p className="articleByline">{article.frontmatter.byline}</p>
+          <p className="articleByline">
+            {article.frontmatter.byline}
+            {" • "}
+            <a
+              href={originalArticleUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="originalLink"
+            >
+              Original
+            </a>
+          </p>
 
           {article.meta.author?.xUrl && (
             <a
@@ -200,14 +185,37 @@ export default async function ArticlePage({ params, searchParams }) {
           )}
         </div>
 
-        <a
-          className="originalArticleLink"
-          href={originalArticleUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Read the original article
-        </a>
+        <div className="aiChatRow" aria-label="Chat links">
+          <a className="aiChatButton" href={chatGptLink} target="_blank" rel="noopener noreferrer">
+            <span className="aiChatIcon" aria-hidden="true">
+              <img
+                src="/social-icons/ChatGPT_logo_light.svg"
+                className="chatgpt-logo-light"
+                alt=""
+              />
+              <img
+                src="/social-icons/ChatGPT_logo_dark.svg"
+                className="chatgpt-logo-dark"
+                alt=""
+              />
+            </span>
+            <span>ChatGPT</span>
+          </a>
+
+          <a className="aiChatButton" href={claudeLink} target="_blank" rel="noopener noreferrer">
+            <span className="aiChatIcon" aria-hidden="true">
+              <img src="/social-icons/Claude_logo_transparent.svg" alt="" />
+            </span>
+            <span>Claude</span>
+          </a>
+
+          <a className="aiChatButton" href={geminiLink} target="_blank" rel="noopener noreferrer">
+            <span className="aiChatIcon" aria-hidden="true">
+              <img src="/social-icons/Gemini_logo_transparent.svg" alt="" />
+            </span>
+            <span>Gemini</span>
+          </a>
+        </div>
       </header>
 
       <div className="tabsShell">
@@ -272,17 +280,42 @@ export default async function ArticlePage({ params, searchParams }) {
             <p className="dualLabel">
               {findLanguageLabel(article.languages, originalArticle.lang)}
             </p>
-            <article className="article dualArticle">{renderArticleBlocks(originalArticle.blocks)}</article>
+            <article className="article dualArticle">
+              <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                {originalArticle.body}
+              </ReactMarkdown>
+            </article>
           </div>
 
           <div className="dualColumn">
             <p className="dualLabel">{findLanguageLabel(article.languages, article.lang)}</p>
-            <article className="article dualArticle">{renderArticleBlocks(article.blocks)}</article>
+            <article className="article dualArticle">
+              <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                {article.body}
+              </ReactMarkdown>
+            </article>
           </div>
         </section>
       ) : (
-        <article className="article">{renderArticleBlocks(article.blocks)}</article>
+        <article className="article">
+          <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+            {article.body}
+          </ReactMarkdown>
+        </article>
       )}
+
+      <p className="credit">
+        Original article:{" "}
+        <a href={article.meta.sourceUrl} target="_blank" rel="noopener noreferrer">
+          {article.meta.title}
+        </a>{" "}
+        by{" "}
+        <a href={article.meta.author.xUrl} target="_blank" rel="noopener noreferrer">
+          {article.meta.author.name}
+        </a>
+        {" • "}
+        {article.meta.publishedAt}
+      </p>
 
       <div className="feedbackBar" aria-label="Feedback">
         {article.meta.author?.xUrl && (
@@ -308,19 +341,6 @@ export default async function ArticlePage({ params, searchParams }) {
           whatsappNumber={process.env.NEXT_PUBLIC_WHATSAPP_FEEDBACK_NUMBER ?? ""}
         />
       </div>
-
-      <p className="credit">
-        Original article:{" "}
-        <a href={article.meta.sourceUrl} target="_blank" rel="noopener noreferrer">
-          {article.meta.title}
-        </a>{" "}
-        by{" "}
-        <a href={article.meta.author.xUrl} target="_blank" rel="noopener noreferrer">
-          {article.meta.author.name}
-        </a>
-        {" • "}
-        {article.meta.publishedAt}
-      </p>
     </main>
   );
 }
