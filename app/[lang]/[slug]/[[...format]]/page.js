@@ -14,7 +14,7 @@ function formatLabel(format) {
 }
 
 function findLanguageLabel(languages, code) {
-  return languages.find((language) => language.code === code)?.label ?? code;
+  return languages?.find?.((language) => language.code === code)?.label ?? code;
 }
 
 function withCompareParam(pathname, enabled) {
@@ -220,7 +220,7 @@ export default async function ArticlePage({ params, searchParams }) {
       <div className="tabsShell">
         <div className="tabsRow">
           <nav className="tabs" aria-label="Language tabs">
-            {article.languages.map((language) => {
+            {article.languages?.map((language) => {
               const isActive = language.code === article.lang;
               return (
                 <Link
@@ -257,7 +257,7 @@ export default async function ArticlePage({ params, searchParams }) {
 
       {article.formats.length > 1 && (
         <nav className="formatTabs" aria-label="Format tabs">
-          {article.formats.map((format) => {
+          {article.formats?.map((format) => {
             const isActive = format === article.format;
             return (
               <Link
