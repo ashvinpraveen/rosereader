@@ -3,6 +3,17 @@ import ThemeToggle from "../components/theme-toggle";
 import SiteFooter from "../components/site-footer";
 import SiteHeader from "../components/site-header";
 import { Analytics } from "@vercel/analytics/react";
+import { Inter, Space_Grotesk } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter"
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-heading"
+});
 
 export const metadata = {
   title: {
@@ -23,7 +34,7 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
         <script
           dangerouslySetInnerHTML={{
             __html: `

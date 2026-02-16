@@ -23,9 +23,8 @@ export default async function HomePage() {
 
   if (!article) {
     return (
-      <main className="page homePage">
+      <main className="page pageWide homePage">
         <section className="homeIntro">
-          <p className="homeBadge">everyoneshouldseethis.com</p>
           <h1 className="heroTitle">No article published yet.</h1>
         </section>
       </main>
@@ -33,10 +32,9 @@ export default async function HomePage() {
   }
 
   return (
-    <main className="page homePage">
+    <main className="page pageWide homePage">
       <section className="homeIntro">
-        <p className="homeBadge">everyoneshouldseethis.com</p>
-        <h1 className="heroTitle">Important writing, translated for everyone.</h1>
+        <h1 className="heroTitle">One important article, translated for everyone.</h1>
         <p className="heroLead">
           Read high-impact articles in multiple languages and formats. Share one link,
           and people can switch to the version they understand best.
@@ -44,9 +42,6 @@ export default async function HomePage() {
       </section>
 
       <section className="homeMessage" aria-label="Site message">
-        <p className="homeMessageParagraph">
-          Dear reader -
-        </p>
         <p className="homeMessageParagraph">
           A lot of the world&apos;s best ideas are still written in English. That&apos;s an accident of
           history, not a rule of nature.
@@ -65,7 +60,6 @@ export default async function HomePage() {
           Translations are done by GPT-5.2 and reviewed by human reviewers. The goal is
           simple: make these ideas accessible to the world, in all languages.
         </p>
-        <p className="homeMessageSignature">- Ashvin</p>
       </section>
 
       <section className="focusSection" id="article" aria-label="Current article">

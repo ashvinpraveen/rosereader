@@ -5,7 +5,7 @@ export default function SiteHeader() {
     <header className="siteHeader">
       <div className="siteHeaderInner">
         <Link href="/" className="siteBrand" aria-label="Home">
-          everyoneshouldseethis.com
+          rosereader
         </Link>
 
         <nav className="siteNav" aria-label="Primary">

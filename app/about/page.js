@@ -33,8 +33,14 @@ export default function AboutPage() {
           Translations are generated with GPT‑5.2 and reviewed by humans. The goal is simple: make
           the best ideas accessible to everyone, in every language.
         </p>
+
+        <p className="aboutParagraph">
+          It&apos;s named rosereader because it&apos;s inspired by the Rosetta Stone: one source text
+          rendered across many languages without losing meaning. In the same spirit, this project
+          takes important writing and makes it readable across linguistic boundaries so more people
+          can engage with the same ideas.
+        </p>
       </section>
     </main>
   );
 }
-
