@@ -64,6 +64,20 @@ function resolveSummaryText(article) {
   return extractOpeningText(article?.body);
 }
 
+function resolveAuthorText(article) {
+  const byline = article?.frontmatter?.byline;
+  if (typeof byline === "string" && byline.trim()) {
+    return byline.split("•")[0].trim();
+  }
+
+  const authorName = article?.frontmatter?.author ?? article?.meta?.author?.name;
+  if (typeof authorName === "string" && authorName.trim()) {
+    return `By ${authorName.trim()}`;
+  }
+
+  return "";
+}
+
 export default async function OpenGraphImage({ params }) {
   const resolvedParams = await params;
 
@@ -78,6 +92,7 @@ export default async function OpenGraphImage({ params }) {
     120
   );
   const openingText = clampText(resolveSummaryText(article) || article?.meta?.previewText || "", 300);
+  const authorText = clampText(resolveAuthorText(article), 90);
 
   return new ImageResponse(
     (
@@ -101,67 +116,70 @@ export default async function OpenGraphImage({ params }) {
             borderRadius: 36,
             background: "rgba(13, 15, 20, 0.84)",
             border: "1px solid #2d3340",
-            padding: "48px 56px",
+            padding: "56px 60px",
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            gap: 24
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 56
           }}
         >
           <div
             style={{
-              width: "100%",
+              flex: 1,
+              maxWidth: 860,
               display: "flex",
+              flexDirection: "column",
               justifyContent: "center",
-              fontSize: 74,
-              lineHeight: 1
+              gap: 22
             }}
           >
-            🌹
+            {authorText ? (
+              <div
+                style={{
+                  fontSize: 26,
+                  lineHeight: 1.2,
+                  color: "#8e97ab"
+                }}
+              >
+                {authorText}
+              </div>
+            ) : null}
+
+            <div
+              style={{
+                fontSize: 66,
+                lineHeight: 1.05,
+                color: "#f1f3f6",
+                letterSpacing: -1.1,
+                fontWeight: 700
+              }}
+            >
+              {title}
+            </div>
+
+            <div
+              style={{
+                fontSize: 31,
+                lineHeight: 1.35,
+                color: "#bac2d2"
+              }}
+            >
+              {openingText}
+            </div>
           </div>
 
           <div
             style={{
-              width: "100%",
+              width: 180,
+              minWidth: 180,
               display: "flex",
-              justifyContent: "center"
+              justifyContent: "center",
+              alignItems: "center",
+              fontSize: 140,
+              lineHeight: 1
             }}
           >
-            <div
-              style={{
-                width: "100%",
-                maxWidth: 920,
-                borderRadius: 28,
-                background: "rgba(16, 19, 25, 0.92)",
-                border: "1px solid #353b4a",
-                padding: "36px 42px",
-                display: "flex",
-                flexDirection: "column",
-                gap: 20
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 56,
-                  lineHeight: 1.08,
-                  color: "#f1f3f6",
-                  letterSpacing: -0.8,
-                  fontWeight: 700
-                }}
-              >
-                {title}
-              </div>
-
-              <div
-                style={{
-                  fontSize: 31,
-                  lineHeight: 1.35,
-                  color: "#bac2d2"
-                }}
-              >
-                {openingText}
-              </div>
-            </div>
+            🌹
           </div>
         </div>
       </div>
