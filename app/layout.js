@@ -1,7 +1,7 @@
 import "./globals.css";
 import SiteFooter from "../components/site-footer";
 import SiteHeader from "../components/site-header";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
 import { Inter, Space_Grotesk } from "next/font/google";
 
 const inter = Inter({
