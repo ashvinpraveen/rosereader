@@ -9,9 +9,6 @@ export default function SiteHeader() {
         </Link>
 
         <nav className="siteNav" aria-label="Primary">
-          <Link href="/#article" className="siteNavLink">
-            Article
-          </Link>
           <Link href="/about" className="siteNavLink">
             About
           </Link>
