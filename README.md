@@ -1,4 +1,4 @@
-# rosereader
+# 🌹 rosereader
 
 Rosereader is the Rosetta stone of the internet. It translates great articles online into multiple major and minor languages so the best ideas can reach more people. We use LLM's to translate into multiple languages and are community driven.
 
