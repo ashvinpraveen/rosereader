@@ -1,6 +1,6 @@
 # rosereader
 
-rosereader is a translation-first publishing project for high-impact writing on AI and the future of society.
+Rosereader is the Rosetta stone of the internet age. It translates great articles online into multiple major and minor languages so the best ideas can reach more people. We use LLM's to translate into multiple languages and are community driven.
 
 Many important ideas are first published in English. The goal of this project is to make those ideas accessible across borders by publishing one source article in many languages (and optional formats) under a single, shareable structure.
 
@@ -11,9 +11,11 @@ The product intent is simple:
 - Make multilingual sharing easy: one link, many languages and formats.
 - Offer a fast feedback loop so translation issues can be corrected.
 
-Translations are generated with GPT models and reviewed by human reviewers before publishing.
+Translations are generated with GPT models and reviewed by human reviewers continuously.
 
 rosereader is open source, and contributors are welcome. If you want to add new high-impact articles or expand language coverage with more translations, contributions are encouraged.
+
+If you're from a community that doesn't speak English natively, do share the articles that are relevant with your community too.
 
 ## What it does
 
