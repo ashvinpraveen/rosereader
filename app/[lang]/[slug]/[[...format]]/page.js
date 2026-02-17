@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import ArticleFeedbackDialog from "../../../../components/article-feedback";
+import ArticleAudioPlayer from "../../../../components/article-audio-player";
 import {
   getArticleDocument,
   getArticlePath
@@ -170,6 +171,12 @@ export default async function ArticlePage({ params, searchParams }) {
       <main className={`page articlePage ${isCompare ? "pageWide" : ""}`}>
       <header className="articleHeader">
         <h1 className="title">{article.frontmatter.title}</h1>
+
+        <ArticleAudioPlayer
+          title={article.frontmatter.title}
+          body={article.body}
+          lang={article.lang}
+        />
 
         <div className="articleMetaRow" aria-label="Article metadata">
           <p className="articleByline">

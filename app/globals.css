@@ -1376,6 +1376,81 @@ a.tab:active {
   cursor: not-allowed;
 }
 
+.audioPlayerShell {
+  margin: 0 0 20px;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--surface-2);
+  padding: 14px 16px;
+}
+
+.audioPlayerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.audioPlayerText {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.audioPlayerIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--text-tertiary);
+}
+
+.audioPlayerControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.audioPlayerButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.audioPlayerButton:hover {
+  background: var(--tab-hover);
+  border-color: var(--tab-border);
+  color: var(--text-primary);
+}
+
+.audioPlayerButton svg {
+  width: 16px;
+  height: 16px;
+}
+
+.audioPlayerButtonPrimary {
+  background: var(--button-primary-bg);
+  border-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+
+.audioPlayerButtonPrimary:hover {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--button-primary-text);
+}
+
 @media (max-width: 720px) {
   .page {
     margin: 52px auto;
@@ -1398,5 +1473,18 @@ a.tab:active {
 
   .footerThemeToggle {
     justify-content: flex-start;
+  }
+
+  .audioPlayerShell {
+    padding: 12px 14px;
+  }
+
+  .audioPlayerText span {
+    font-size: 0.88rem;
+  }
+
+  .audioPlayerButton {
+    width: 34px;
+    height: 34px;
   }
 }
