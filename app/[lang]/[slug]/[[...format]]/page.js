@@ -5,9 +5,10 @@ import remarkGfm from "remark-gfm";
 import ArticleFeedbackDialog from "../../../../components/article-feedback";
 import {
   getArticleDocument,
-  getArticlePath,
-  listStaticArticleParams
+  getArticlePath
 } from "../../../../lib/content";
+
+export const dynamic = "force-dynamic";
 
 function formatLabel(format) {
   return format.charAt(0).toUpperCase() + format.slice(1);
@@ -51,10 +52,6 @@ const markdownComponents = {
     </a>
   )
 };
-
-export async function generateStaticParams() {
-  return listStaticArticleParams();
-}
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
