@@ -20,6 +20,8 @@ function formatDate(value) {
 export default async function HomePage() {
   const articles = await listArticlesIndex();
   const article = articles[0];
+  const articlePreviewText =
+    article?.previewTextByLanguage?.[article?.defaultLanguage] ?? article?.previewText ?? "";
 
   if (!article) {
     return (
@@ -80,7 +82,7 @@ export default async function HomePage() {
             )}{" "}
             • {formatDate(article.publishedAt)}
           </p>
-          {article.previewText && <p className="focusPreview">{article.previewText}</p>}
+          {articlePreviewText && <p className="focusPreview">{articlePreviewText}</p>}
           <p className="focusLanguages">
             Available in {article.languages.length} languages:{" "}
             {article.languages.map((language) => language.label).join(" • ")}

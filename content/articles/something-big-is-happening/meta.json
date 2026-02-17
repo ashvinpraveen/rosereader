@@ -7,6 +7,21 @@
   ],
   "title": "Something Big Is Happening",
   "previewText": "A personal note for non-tech friends and family on what AI is starting to change.",
+  "previewTextByLanguage": {
+    "en": "A personal note for non-tech friends and family on what AI is starting to change.",
+    "es": "Una nota personal para amigos y familiares no técnicos sobre lo que la IA está empezando a cambiar.",
+    "de": "Eine persönliche Notiz für nicht-technische Freunde und Familie darüber, was KI gerade zu verändern beginnt.",
+    "ar": "ملاحظة شخصية للأصدقاء والعائلة غير التقنيين حول ما بدأ الذكاء الاصطناعي يغيّره.",
+    "hi": "तकनीक से बाहर के दोस्तों और परिवार के लिए एक निजी नोट कि AI क्या-क्या बदलना शुरू कर रहा है।",
+    "id": "Catatan pribadi untuk teman dan keluarga non-teknis tentang hal-hal yang mulai diubah oleh AI.",
+    "ms": "Nota peribadi untuk rakan dan keluarga bukan teknikal tentang perkara yang AI mula ubah.",
+    "zh": "写给非技术圈朋友和家人的一则个人说明，谈谈AI正开始改变什么。",
+    "ta": "தொழில்நுட்பத் துறைக்கு அப்பாற்பட்ட நண்பர்கள் மற்றும் குடும்பத்தினருக்காக, AI மாற்றத் தொடங்கும் விஷயங்கள் குறித்த ஒரு தனிப்பட்ட குறிப்பு.",
+    "tl": "Isang personal na tala para sa mga kaibigan at pamilyang hindi teknikal tungkol sa mga pagbabagong sinisimulan ng AI.",
+    "ml": "സാങ്കേതിക രംഗത്തിന് പുറത്തുള്ള സുഹൃത്തുകൾക്കും കുടുംബത്തിനുമായി, AI മാറ്റാൻ തുടങ്ങുന്ന കാര്യങ്ങളെക്കുറിച്ചുള്ള ഒരു വ്യക്തിപരമായ കുറിപ്പ്.",
+    "iba": "Nota peribadi ngagai kaban enggau keluarga ke ukai teknikal pasal utai ke AI benung berengkah ngubah.",
+    "kdu": "Nota peribadi untuk rakan om keluarga non-teknikal pasal perkara no AI poingkakat mongubah."
+  },
   "author": {
     "name": "Matt Shumer",
     "xHandle": "@mattshumer_",

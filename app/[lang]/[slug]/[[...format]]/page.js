@@ -32,6 +32,56 @@ function isNotFoundError(error) {
   );
 }
 
+function stripMarkdownForDescription(text) {
+  if (typeof text !== "string") return "";
+
+  return text
+    .replace(/!\[[^\]]*]\([^)]*\)/g, "")
+    .replace(/\[([^\]]+)]\(([^)]+)\)/g, "$1")
+    .replace(/[`*_>#~]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function extractOpeningDescription(markdownBody) {
+  if (typeof markdownBody !== "string") return "";
+
+  const blocks = markdownBody
+    .split(/\n{2,}/)
+    .map((block) => block.trim())
+    .filter(Boolean);
+
+  for (const block of blocks) {
+    if (block === "---") continue;
+    if (/^[-*_]{3,}$/.test(block.replace(/\s+/g, ""))) continue;
+    if (block.startsWith("#")) continue;
+    if (block.startsWith(">")) continue;
+
+    const cleaned = stripMarkdownForDescription(block);
+    if (cleaned) return cleaned;
+  }
+
+  return "";
+}
+
+function resolveMetaDescription(article) {
+  const frontmatterSummary =
+    article?.frontmatter?.previewText ??
+    article?.frontmatter?.description ??
+    article?.frontmatter?.summary;
+
+  if (typeof frontmatterSummary === "string" && frontmatterSummary.trim()) {
+    return frontmatterSummary.trim();
+  }
+
+  const isDefaultLanguage = article?.lang === article?.meta?.defaultLanguage;
+  if (isDefaultLanguage && typeof article?.meta?.previewText === "string" && article.meta.previewText.trim()) {
+    return article.meta.previewText.trim();
+  }
+
+  return extractOpeningDescription(article?.body) || article?.meta?.previewText || article?.meta?.title;
+}
+
 const markdownComponents = {
   h1: ({ children }) => <h2 className="articleSectionTitle">{children}</h2>,
   h2: ({ children }) => <h2 className="articleSectionTitle">{children}</h2>,
@@ -69,6 +119,13 @@ export async function generateMetadata({ params }) {
       return { title: "Not found" };
     }
 
+    const articlePath = getArticlePath({
+      lang: article.lang,
+      slug: article.slug,
+      format: article.format
+    });
+    const ogImagePath = `/${article.lang}/${article.slug}/opengraph-image`;
+
     const languageAlternates = Object.fromEntries(
       article.languages.map((language) => [
         language.code,
@@ -80,15 +137,33 @@ export async function generateMetadata({ params }) {
       ])
     );
 
+    const description = resolveMetaDescription(article);
+
     return {
       title: `${article.frontmatter.title} | Every One Should See This`,
-      description: article.meta.previewText ?? article.meta.title,
+      description,
+      openGraph: {
+        title: article.frontmatter.title,
+        description,
+        type: "article",
+        url: articlePath,
+        images: [
+          {
+            url: ogImagePath,
+            width: 1200,
+            height: 630,
+            alt: `${article.frontmatter.title} preview`
+          }
+        ]
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: article.frontmatter.title,
+        description,
+        images: [ogImagePath]
+      },
       alternates: {
-        canonical: getArticlePath({
-          lang: article.lang,
-          slug: article.slug,
-          format: article.format
-        }),
+        canonical: articlePath,
         languages: languageAlternates
       }
     };
