@@ -3,7 +3,7 @@ import { listArticlesIndex } from "../lib/content";
 
 export const metadata = {
   title: "Every One Should See This",
-  description: "One important article, translated clearly."
+  description: "Important ideas, made accessible in many languages."
 };
 
 function formatDate(value) {
@@ -34,18 +34,18 @@ export default async function HomePage() {
   return (
     <main className="page pageWide homePage">
       <section className="homeIntro">
-        <h1 className="heroTitle">The world&apos;s most important ideas shouldn&apos;t be trapped in English.</h1>
+        <h1 className="heroTitle">Democratising access to the world&apos;s best ideas</h1>
         <p className="heroLead">
-          Impactful writing shouldn&apos;t be limited by the language you speak. We translate
-          the articles that matter into every major tongue—share one link, and let
-          everyone read the version they understand best.
+          We translate high-impact writing on AI and the future of society into
+          major languages, so awareness can spread across borders and more
+          people can be prepared for what&apos;s happening.
         </p>
       </section>
 
       <section className="homeMessage" aria-label="Site message">
         <p className="homeMessageParagraph">
-          A lot of the world&apos;s best ideas are still written in English. That&apos;s an accident of
-          history, not a rule of nature.
+          Many impactful ideas are first published in English, and that gives us
+          an opportunity: make them easier to access everywhere.
         </p>
         <p className="homeMessageParagraph">
           With the rate AI is progressing, we can translate the writing that matters and

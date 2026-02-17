@@ -8,7 +8,7 @@ export default function SiteFooter() {
         <div className="footerTextGroup">
           <nav className="footerLinks" aria-label="Footer">
             <Link href="/#article" className="footerLink">
-              Article
+              Home
             </Link>
             <Link href="/about" className="footerLink">
               About

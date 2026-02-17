@@ -22,6 +22,15 @@ function withCompareParam(pathname, enabled) {
   return `${pathname}?compare=1`;
 }
 
+function isNotFoundError(error) {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "digest" in error &&
+    String(error.digest).includes("NEXT_HTTP_ERROR_FALLBACK;404")
+  );
+}
+
 const markdownComponents = {
   h1: ({ children }) => <h2 className="articleSectionTitle">{children}</h2>,
   h2: ({ children }) => <h2 className="articleSectionTitle">{children}</h2>,
@@ -49,109 +58,119 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
-  const requestedFormat = resolvedParams.format?.[0] ?? "full";
 
-  const article = await getArticleDocument({
-    slug: resolvedParams.slug,
-    lang: resolvedParams.lang,
-    format: requestedFormat
-  });
+  try {
+    const requestedFormat = resolvedParams.format?.[0] ?? "full";
 
-  if (!article) {
-    return { title: "Not found" };
-  }
+    const article = await getArticleDocument({
+      slug: resolvedParams.slug,
+      lang: resolvedParams.lang,
+      format: requestedFormat
+    });
 
-  const languageAlternates = Object.fromEntries(
-    article.languages.map((language) => [
-      language.code,
-      getArticlePath({
-        lang: language.code,
-        slug: article.slug,
-        format: article.format
-      })
-    ])
-  );
-
-  return {
-    title: `${article.frontmatter.title} | Every One Should See This`,
-    description: article.meta.previewText ?? article.meta.title,
-    alternates: {
-      canonical: getArticlePath({
-        lang: article.lang,
-        slug: article.slug,
-        format: article.format
-      }),
-      languages: languageAlternates
+    if (!article) {
+      return { title: "Not found" };
     }
-  };
+
+    const languageAlternates = Object.fromEntries(
+      article.languages.map((language) => [
+        language.code,
+        getArticlePath({
+          lang: language.code,
+          slug: article.slug,
+          format: article.format
+        })
+      ])
+    );
+
+    return {
+      title: `${article.frontmatter.title} | Every One Should See This`,
+      description: article.meta.previewText ?? article.meta.title,
+      alternates: {
+        canonical: getArticlePath({
+          lang: article.lang,
+          slug: article.slug,
+          format: article.format
+        }),
+        languages: languageAlternates
+      }
+    };
+  } catch (error) {
+    console.error("Failed to generate article metadata", {
+      params: resolvedParams,
+      error
+    });
+    return { title: "Every One Should See This" };
+  }
 }
 
 export default async function ArticlePage({ params, searchParams }) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
-  const requestedFormat = resolvedParams.format?.[0] ?? "full";
+  try {
+    const requestedFormat = resolvedParams.format?.[0] ?? "full";
 
-  const article = await getArticleDocument({
-    slug: resolvedParams.slug,
-    lang: resolvedParams.lang,
-    format: requestedFormat
-  });
+    const article = await getArticleDocument({
+      slug: resolvedParams.slug,
+      lang: resolvedParams.lang,
+      format: requestedFormat
+    });
 
-  if (!article) {
-    notFound();
-  }
+    if (!article) {
+      notFound();
+    }
 
-  const originalLanguage = article.meta.defaultLanguage ?? "en";
-  const canCompare = article.lang !== originalLanguage;
-  const isCompareRequested = resolvedSearchParams?.compare === "1";
-  const isCompare = Boolean(canCompare && isCompareRequested);
+    const originalLanguage = article.meta.defaultLanguage ?? "en";
+    const canCompare = article.lang !== originalLanguage;
+    const isCompareRequested = resolvedSearchParams?.compare === "1";
+    const isCompare = Boolean(canCompare && isCompareRequested);
 
-  const originalArticle = isCompare
-    ? await getArticleDocument({
-      slug: article.slug,
-      lang: originalLanguage,
-      format: article.format
-    })
-    : null;
-
-  const originalArticleUrl =
-    article.meta.sourceUrl ?? "https://shumer.dev/something-big-is-happening";
-
-  const languageTabHref = (languageCode) =>
-    withCompareParam(
-      getArticlePath({
-        lang: languageCode,
+    const originalArticle = isCompare
+      ? await getArticleDocument({
         slug: article.slug,
+        lang: originalLanguage,
         format: article.format
-      }),
-      isCompare && languageCode !== originalLanguage
-    );
+      })
+      : null;
 
-  const formatTabHref = (format) =>
-    withCompareParam(
-      getArticlePath({
-        lang: article.lang,
-        slug: article.slug,
-        format
-      }),
-      isCompare
-    );
+    const originalArticleUrl =
+      article.meta.sourceUrl ?? "https://shumer.dev/something-big-is-happening";
 
-  const compareToggleHref = isCompare
-    ? getArticlePath({ lang: article.lang, slug: article.slug, format: article.format })
-    : withCompareParam(
-      getArticlePath({ lang: article.lang, slug: article.slug, format: article.format }),
-      true
-    );
-  const preferredLanguage = findLanguageLabel(article.languages, article.lang);
-  const llmPrompt = `explain this, personalise it to me based on what you know about me and change the language to ${preferredLanguage}. ${originalArticleUrl}`;
-  const encodedLlmPrompt = encodeURIComponent(llmPrompt);
-  const chatGptLink = `https://chatgpt.com/?q=${encodedLlmPrompt}`;
-  const claudeLink = `https://claude.ai/new?q=${encodedLlmPrompt}`;
-  const geminiLink = `https://gemini.google.com/app?q=${encodedLlmPrompt}`;
+    const languageTabHref = (languageCode) =>
+      withCompareParam(
+        getArticlePath({
+          lang: languageCode,
+          slug: article.slug,
+          format: article.format
+        }),
+        isCompare && languageCode !== originalLanguage
+      );
 
-  return (
-    <main className={`page articlePage ${isCompare ? "pageWide" : ""}`}>
+    const formatTabHref = (format) =>
+      withCompareParam(
+        getArticlePath({
+          lang: article.lang,
+          slug: article.slug,
+          format
+        }),
+        isCompare
+      );
+
+    const compareToggleHref = isCompare
+      ? getArticlePath({ lang: article.lang, slug: article.slug, format: article.format })
+      : withCompareParam(
+        getArticlePath({ lang: article.lang, slug: article.slug, format: article.format }),
+        true
+      );
+    const preferredLanguage = findLanguageLabel(article.languages, article.lang);
+    const llmPrompt = `explain this, personalise it to me based on what you know about me and change the language to ${preferredLanguage}. ${originalArticleUrl}`;
+    const encodedLlmPrompt = encodeURIComponent(llmPrompt);
+    const chatGptLink = `https://chatgpt.com/?q=${encodedLlmPrompt}`;
+    const claudeLink = `https://claude.ai/new?q=${encodedLlmPrompt}`;
+    const geminiLink = `https://gemini.google.com/app?q=${encodedLlmPrompt}`;
+
+    return (
+      <main className={`page articlePage ${isCompare ? "pageWide" : ""}`}>
       <header className="articleHeader">
         <h1 className="title">{article.frontmatter.title}</h1>
 
@@ -320,30 +339,42 @@ export default async function ArticlePage({ params, searchParams }) {
         {article.meta.publishedAt}
       </p>
 
-      <div className="feedbackBar" aria-label="Feedback">
-        {article.meta.author?.xUrl && (
-          <a
-            className="followButton"
-            href={article.meta.author.xUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span className="followIcon" aria-hidden="true">
-              <img src="/social-icons/X_Twitter_logo.svg" alt="" />
-            </span>
-            <span>Follow {article.meta.author.xHandle ?? article.meta.author.name}</span>
-          </a>
-        )}
-        <ArticleFeedbackDialog
-          articleTitle={article.frontmatter.title}
-          slug={article.slug}
-          currentLang={article.lang}
-          currentFormat={article.format}
-          languages={article.languages}
-          formats={article.formats}
-          whatsappNumber={process.env.NEXT_PUBLIC_WHATSAPP_FEEDBACK_NUMBER ?? ""}
-        />
-      </div>
-    </main>
-  );
+        <div className="feedbackBar" aria-label="Feedback">
+          {article.meta.author?.xUrl && (
+            <a
+              className="followButton"
+              href={article.meta.author.xUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="followIcon" aria-hidden="true">
+                <img src="/social-icons/X_Twitter_logo.svg" alt="" />
+              </span>
+              <span>Follow {article.meta.author.xHandle ?? article.meta.author.name}</span>
+            </a>
+          )}
+          <ArticleFeedbackDialog
+            articleTitle={article.frontmatter.title}
+            slug={article.slug}
+            currentLang={article.lang}
+            currentFormat={article.format}
+            languages={article.languages}
+            formats={article.formats}
+            whatsappNumber={process.env.NEXT_PUBLIC_WHATSAPP_FEEDBACK_NUMBER ?? ""}
+          />
+        </div>
+      </main>
+    );
+  } catch (error) {
+    if (isNotFoundError(error)) {
+      throw error;
+    }
+
+    console.error("Failed to render article page", {
+      params: resolvedParams,
+      searchParams: resolvedSearchParams,
+      error
+    });
+    notFound();
+  }
 }

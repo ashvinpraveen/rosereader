@@ -24,6 +24,11 @@
   --tab-active-b: #1f2937;
   --tab-active-text: #ffffff;
   --tab-focus: #93c5fd;
+  --nav-link-font: var(--font-inter), "Segoe UI", sans-serif;
+  --nav-link-weight: 300;
+  --bg-dither-dot: rgba(15, 23, 42, 0.08);
+  --bg-dither-dot-soft: rgba(15, 23, 42, 0.045);
+  --bg-grid-line: rgba(15, 23, 42, 0.025);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -52,6 +57,9 @@
     --tab-active-b: #e0e0e0;
     --tab-active-text: #161616;
     --tab-focus: #8f8f8f;
+    --bg-dither-dot: rgba(226, 232, 240, 0.12);
+    --bg-dither-dot-soft: rgba(226, 232, 240, 0.07);
+    --bg-grid-line: rgba(226, 232, 240, 0.03);
   }
 }
 
@@ -81,6 +89,9 @@
   --tab-active-b: #1f2937;
   --tab-active-text: #ffffff;
   --tab-focus: #93c5fd;
+  --bg-dither-dot: rgba(15, 23, 42, 0.08);
+  --bg-dither-dot-soft: rgba(15, 23, 42, 0.045);
+  --bg-grid-line: rgba(15, 23, 42, 0.025);
 }
 
 :root[data-theme="dark"] {
@@ -109,6 +120,9 @@
   --tab-active-b: #e0e0e0;
   --tab-active-text: #161616;
   --tab-focus: #8f8f8f;
+  --bg-dither-dot: rgba(226, 232, 240, 0.12);
+  --bg-dither-dot-soft: rgba(226, 232, 240, 0.07);
+  --bg-grid-line: rgba(226, 232, 240, 0.03);
 }
 
 * {
@@ -123,6 +137,46 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+body:has(.homePage) {
+  background-image:
+    radial-gradient(circle at center, var(--bg-dither-dot) 0.55px, transparent 0.85px),
+    radial-gradient(circle at center, var(--bg-dither-dot-soft) 0.45px, transparent 0.8px),
+    linear-gradient(var(--bg-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-grid-line) 1px, transparent 1px);
+  background-size: 9px 9px, 13px 13px, 120px 120px, 120px 120px;
+  background-position: 0 0, 5px 4px, -1px -1px, -1px -1px;
+  background-attachment: fixed;
+  animation: homeDitherShift 24s linear infinite;
+}
+
+@keyframes homeDitherShift {
+  0% {
+    background-position: 0 0, 5px 4px, -1px -1px, -1px -1px;
+  }
+
+  25% {
+    background-position: 3px 2px, 7px 6px, 1px 0, 0 1px;
+  }
+
+  50% {
+    background-position: 6px 5px, 11px 10px, 2px 2px, 2px 3px;
+  }
+
+  75% {
+    background-position: 2px 7px, 8px 11px, 0 1px, 1px 2px;
+  }
+
+  100% {
+    background-position: 0 0, 5px 4px, -1px -1px, -1px -1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body:has(.homePage) {
+    animation: none;
+  }
 }
 
 h1,
@@ -188,8 +242,9 @@ body:has(.articlePage) .siteHeader {
   align-items: center;
   text-decoration: none;
   color: var(--text-secondary);
-  font-weight: 600;
-  font-size: 0.92rem;
+  font-family: var(--nav-link-font);
+  font-weight: var(--nav-link-weight);
+  font-size: 0.88rem;
 }
 
 .siteNavLink:hover {
@@ -233,7 +288,9 @@ body:has(.articlePage) .siteHeader {
 .footerLink {
   color: var(--text-secondary);
   text-decoration: none;
-  font-weight: 600;
+  font-family: var(--nav-link-font);
+  font-weight: var(--nav-link-weight);
+  font-size: 0.88rem;
 }
 
 .footerLink:hover {
@@ -415,37 +472,41 @@ body:has(.articlePage) .siteHeader {
 }
 
 .heroTitle {
-  margin: 0 0 10px;
-  font-size: clamp(2rem, 5vw, 2.8rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  max-width: none;
+  margin: 0 0 14px;
+  font-size: clamp(2rem, 4.8vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.028em;
+  max-width: 19ch;
 }
 
 .heroLead {
   margin: 0;
   color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: none;
+  line-height: 1.75;
+  max-width: 70ch;
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
 }
 
 .homeIntro {
-  margin: 0 0 32px;
+  margin: 0 0 36px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
 }
 
 .homeMessage {
   margin: 0 0 28px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 18px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  padding: 22px;
   background: transparent;
+  box-shadow: none;
 }
 
 .homeMessageParagraph {
-  margin: 0 0 14px;
+  margin: 0 0 13px;
   color: var(--text-secondary);
-  line-height: 1.75;
-  font-size: 1rem;
+  line-height: 1.72;
+  font-size: 0.98rem;
 }
 
 .homeMessageParagraph:last-of-type {
@@ -463,25 +524,26 @@ body:has(.articlePage) .siteHeader {
 }
 
 .focusCard {
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 18px;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  padding: 22px;
   background: transparent;
+  box-shadow: none;
 }
 
 .focusKicker {
   margin: 0 0 10px;
-  color: var(--text-tertiary);
-  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .focusTitle {
-  margin: 0 0 8px;
-  font-size: 1.55rem;
-  line-height: 1.2;
+  margin: 0 0 10px;
+  font-size: 1.5rem;
+  line-height: 1.25;
 }
 
 .focusTitle a {
@@ -497,7 +559,7 @@ body:has(.articlePage) .siteHeader {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 16px 0 0;
+  margin: 18px 0 0;
 }
 
 .primaryButton,
@@ -505,11 +567,12 @@ body:has(.articlePage) .siteHeader {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 14px;
-  border-radius: 10px;
+  padding: 10px 15px;
+  border-radius: 11px;
   text-decoration: none;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 650;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
 
 .primaryButton {
@@ -519,28 +582,83 @@ body:has(.articlePage) .siteHeader {
 }
 
 .secondaryButton {
-  background: transparent;
+  background: var(--surface-2);
   border: 1px solid var(--border-strong);
   color: var(--text-secondary);
 }
 
+.primaryButton:hover {
+  background: var(--text-primary);
+  color: var(--button-primary-text);
+}
+
+.secondaryButton:hover {
+  border-color: var(--tab-border);
+  color: var(--text-primary);
+}
+
+.homePage .primaryButton,
+.homePage .secondaryButton {
+  border-radius: 0;
+  background: transparent;
+}
+
+.homePage .primaryButton {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+.homePage .primaryButton:hover {
+  background: var(--tab-hover);
+}
+
 .focusMeta {
-  margin: 0 0 12px;
+  margin: 0 0 13px;
   color: var(--text-secondary);
-  font-size: 0.92rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 .focusPreview {
-  margin: 0 0 12px;
+  margin: 0 0 14px;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.65;
+  font-size: 0.98rem;
 }
 
 .focusLanguages {
   margin: 0;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
+  color: var(--text-tertiary);
+  font-size: 0.88rem;
   line-height: 1.6;
+}
+
+@media (min-width: 980px) {
+  .homePage {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: 24px 28px;
+    align-items: start;
+  }
+
+  .homeIntro {
+    grid-column: 1 / -1;
+    margin-bottom: 4px;
+  }
+
+  .homeMessage {
+    grid-column: 1;
+    margin-bottom: 0;
+  }
+
+  .focusSection {
+    grid-column: 2;
+  }
+
+  .focusCard {
+    position: sticky;
+    top: 96px;
+  }
 }
 
 .authorLink {
