@@ -1,6 +1,6 @@
 # rosereader
 
-Rosereader is the Rosetta stone of the internet age. It translates great articles online into multiple major and minor languages so the best ideas can reach more people. We use LLM's to translate into multiple languages and are community driven.
+Rosereader is the Rosetta stone of the internet. It translates great articles online into multiple major and minor languages so the best ideas can reach more people. We use LLM's to translate into multiple languages and are community driven.
 
 Many important ideas are first published in English. The goal of this project is to make those ideas accessible across borders by publishing one source article in many languages (and optional formats) under a single, shareable structure.
 
@@ -16,6 +16,25 @@ Translations are generated with GPT models and reviewed by human reviewers conti
 rosereader is open source, and contributors are welcome. If you want to add new high-impact articles or expand language coverage with more translations, contributions are encouraged.
 
 If you're from a community that doesn't speak English natively, do share the articles that are relevant with your community too.
+
+## How to contribute (for non-techies)
+
+If you'd like to contribute your excess AI tokens from your ChatGPT subscription and help your community, copy the text from the original article, and paste it into ChatGPT with the following prompt in the same message:
+
+"Translate the entire article exactly into <Language>. Don't summarise. Keep the exact MDX formatting as shown here. Check at the end if the number of paragraphs is the same and words is roughly the same to be certain you've translated everything."
+
+I've found this tends to prevent the AI models from automatically summarising long passages instead of translating everything. 
+
+Then to upload it you can either send it to me with the feedback button in the website, or do it yourself by:
+1. Forking the repo (button in the top right)
+2. Accessing it online on V0 or opening it with a code editor like the Codex app (recommended), V0, Cursor or Antigravity
+3. Pasting in the new article translation under content
+4. Ask the AI in these code editors to check if the formatting is right.
+5. Ask AI to push the changes to github and make a PR.
+
+(you'll get the hang of it!)
+
+If you wanna suggest other things like design changes, new articles we should add, other features to make knowledge accessible in a better way, I welcome lots of these kinds of PR's too & want this to be a fun community project. 
 
 ## What it does
 
